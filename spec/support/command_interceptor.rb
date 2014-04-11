@@ -10,7 +10,7 @@ module CommandInterceptor
   LOG_PATH = File.expand_path("../../../tmp/commands.yml", __FILE__)
 
   def self.setup
-    ENV["PATH"] = "#{BIN_PATH}:#{ENV["PATH"]}"
+    ENV["PATH"] = [BIN_PATH, ENV["PATH"]].join(File::PATH_SEPARATOR)
   end
 
   def self.intercept(name)

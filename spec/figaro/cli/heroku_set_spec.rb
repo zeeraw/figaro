@@ -6,7 +6,7 @@ describe "figaro heroku:set" do
   before do
     create_dir("example")
     cd("example")
-    write_file("config/application.yml", "foo: bar")
+    write_file(File.join("config", "application.yml"), "foo: bar")
   end
 
   it "sends Figaro configuration to Heroku" do
@@ -28,7 +28,7 @@ describe "figaro heroku:set" do
   end
 
   it "respects environment" do
-    overwrite_file("config/application.yml", <<-EOF)
+    overwrite_file(File.join("config", "application.yml"), <<-EOF)
 foo: bar
 test:
   foo: baz
@@ -51,7 +51,7 @@ EOF
   end
 
   it "handles values with special characters" do
-    overwrite_file("config/application.yml", "foo: bar baz")
+    overwrite_file(File.join("config", "application.yml"), "foo: bar baz")
 
     run_simple("figaro heroku:set")
 
