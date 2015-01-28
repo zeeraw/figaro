@@ -46,5 +46,22 @@ EOL
 
       assert_partial_output("bar", all_stdout)
     end
+
+    context "when there is no config/database.yml" do
+
+      before { remove_file("config/database.yml") }
+
+      it "raises error when DATABASE_URL is not specified in application.yml" do
+        expect(run_simple("rake db:migrate", false)).to be_nil
+      end
+
+      it "allows DATABASE_URL to be specified in application.yml" do
+        write_file("config/application.yml", "database_url: sqlite3:db/database-url-test.sqlite3?timeout=5000&pool=5")
+        run_simple("rake db:migrate")
+        check_file_presence(["db/database-url-test.sqlite3"], true)
+        remove_file("db/database-url-test.sqlite3")
+      end
+
+    end
   end
 end
